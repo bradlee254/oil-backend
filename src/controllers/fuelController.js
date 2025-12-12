@@ -56,6 +56,14 @@ exports.updateRequestStatus = async (req, res) =>{
         request.status = status;
         await request.save();
         res.json({message: 'Request status updated', request});
+        
+        if(status === 'delivered'&& request.rider){
+            const rider = await Rider.findById(request.rider);
+            if(rider){
+                rider.status = 'available';
+                await rider.save();
+            }
+        }
     }catch(error){
         res.status(500).json({message: 'Server Error', error: error.message});
     }

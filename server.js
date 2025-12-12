@@ -4,6 +4,7 @@ const cors = require('cors');
 const connectDb = require('./src/config/db');
 const authRoutes = require('./src/routes/authRoutes');
 const fuelRoutes = require('./src/routes/fuelRoutes');
+const riderRoutes = require('./src/routes/riderRoutes');
 
 
 
@@ -21,6 +22,7 @@ app.use(cors());
 app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/fuel', fuelRoutes);
+app.use('/api/rider', riderRoutes);
 
 app.get('/',(req, res)=>{
     res.send('oil project backend is running');
