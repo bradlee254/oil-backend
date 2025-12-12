@@ -30,6 +30,11 @@ const fuelRequestSchema = new mongoose.Schema({
     type: String,
     enum: ["pending", "delivered", "cancelled"],
     default: "pending"
+  },
+  rider:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Rider",
+    default: null
   }
 }, { timestamps: true });
 
