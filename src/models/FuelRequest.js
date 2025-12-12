@@ -6,6 +6,10 @@ const fuelRequestSchema = new mongoose.Schema({
     ref: "User",
     required: true 
   },
+  rider:{
+    type:mongoose.Schema.Types.ObjectId, ref: "User"
+
+  },
   location: {
     type: {
       type: String, 

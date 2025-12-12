@@ -22,7 +22,7 @@ app.use(cors());
 app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/fuel', fuelRoutes);
-app.use('/api/rider', riderRoutes);
+app.use('/api/riders', riderRoutes);
 
 app.get('/',(req, res)=>{
     res.send('oil project backend is running');

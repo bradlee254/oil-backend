@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const {assignRider} =require('../controllers/riderControllers');
-const {authAdmin} = require('../middlewares/authMiddleware');
+const { assignRider } = require('../controllers/riderControllers');
+const { protect, authAdmin } = require('../middleware/authMiddleware');
 
-router.put('/assign/:requestId', authAdmin, assignRider);
+// Order matters: protect first, then authAdmin
+router.put('/assign/:requestId', protect, authAdmin, assignRider);
 
 module.exports = router;

@@ -5,7 +5,7 @@ const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true, lowercase: true },
   password: { type: String, required: true },
-  role: { type: String, enum: ["customer", "driver", "admin"], default: "customer" },
+  role: { type: String, enum: ["customer", "rider", "admin"], default: "customer" },
 }, { timestamps: true });
 
 // Modern async middleware (Mongoose 5.2.0+)
