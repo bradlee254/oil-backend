@@ -5,6 +5,7 @@ const connectDb = require('./src/config/db');
 const authRoutes = require('./src/routes/authRoutes');
 const fuelRoutes = require('./src/routes/fuelRoutes');
 const riderRoutes = require('./src/routes/riderRoutes');
+const adminRoutes = require('./src/routes/adminRoutes');
 
 
 
@@ -23,6 +24,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/fuel', fuelRoutes);
 app.use('/api/riders', riderRoutes);
+app.use('/api/admin', adminRoutes);
 
 app.get('/',(req, res)=>{
     res.send('oil project backend is running');
