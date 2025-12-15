@@ -1,4 +1,4 @@
-const Rider = require('../models/Rider');
+
 const FuelRequest = require('../models/FuelRequest');
 
 exports.assignRider = async (req, res) => {
