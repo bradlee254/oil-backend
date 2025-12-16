@@ -23,7 +23,7 @@ app.use(cors());
 app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/fuel', fuelRoutes);
-app.use('/api/riders', riderRoutes);
+app.use('/api/rider', riderRoutes);
 app.use('/api/admin', adminRoutes);
 
 app.get('/',(req, res)=>{

@@ -1,9 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const { assignRider } = require('../controllers/riderControllers');
-const { protect, authAdmin } = require('../middleware/authMiddleware');
+const {getMyAssignedRequests, updateDeliveryStatus} = require('../controllers/riderControllers');
+const {protect} =require('../middleware/authMiddleware');
 
-// Order matters: protect first, then authAdmin
-router.put('/assign/:requestId', protect, authAdmin, assignRider);
+const riderOnly =(req, res, next)=>{
+    if(req.user.role !== 'rider'){
+        return res.status(403).json({message: 'Access denied, riders only'});
+        
+    }
+    next();
+}
+router.get('/requests', protect, riderOnly, getMyAssignedRequests);
+router.put('/requests/:id/status', protect, riderOnly, updateDeliveryStatus);
 
 module.exports = router;
