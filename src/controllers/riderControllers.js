@@ -1,42 +1,51 @@
 const FuelRequest = require("../models/FuelRequest");
 
-exports.getMyAssignedRequests = async (req, res) => {
+// Rider: view assigned jobs
+exports.getMyAssignments = async (req, res) => {
   try {
     const requests = await FuelRequest.find({
       rider: req.user._id,
       status: { $in: ["assigned", "on_the_way"] },
-    })
-      .populate("user", "name email")
-      .sort({ createdAt: -1 });
+    }).populate("user", "name email");
 
-    res.json({ requests });
-  } catch (error) {
-    res.status(500).json({ message: "Server Error", error: error.message });
+    res.json(requests);
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
   }
 };
-exports.updateDeliveryStatus = async (req, res) => {
+
+// Rider: start delivery
+exports.startDelivery = async (req, res) => {
   try {
-    const { id } = req.params;
-    const { status } = req.body;
+    const request = await FuelRequest.findById(req.params.id);
 
-    if (!["on_the_way", "delivered"].includes(status)) {
-      return res.status(400).json({ message: "Invalid status update" });
-    }
+    if (!request) return res.status(404).json({ message: "Request not found" });
+    if (request.rider.toString() !== req.user._id.toString())
+      return res.status(403).json({ message: "Not your assignment" });
 
-    const request = await FuelRequest.findOne({
-      _id: id,
-      rider: req.user._id,
-    });
-
-    if (!request) {
-      return res.status(404).json({ message: "Request not found" });
-    }
-
-    request.status = status;
+    request.status = "on_the_way";
     await request.save();
 
-    res.json({ message: "Status updated", request });
-  } catch (error) {
-    res.status(500).json({ message: "Server Error", error: error.message });
+    res.json({ message: "Delivery started", request });
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// Rider: complete delivery
+exports.completeDelivery = async (req, res) => {
+  try {
+    const request = await FuelRequest.findById(req.params.id);
+
+    if (!request) return res.status(404).json({ message: "Request not found" });
+    if (request.rider.toString() !== req.user._id.toString())
+      return res.status(403).json({ message: "Not your assignment" });
+
+    request.status = "delivered";
+    await request.save();
+
+    res.json({ message: "Delivery completed", request });
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
   }
 };

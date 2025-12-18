@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {getMyAssignedRequests, updateDeliveryStatus} = require('../controllers/riderControllers');
+const {getMyAssignedRequests, startDelivery,completeDelivery} = require('../controllers/riderControllers');
 const {protect} =require('../middleware/authMiddleware');
 
 const riderOnly =(req, res, next)=>{
@@ -11,6 +11,7 @@ const riderOnly =(req, res, next)=>{
     next();
 }
 router.get('/requests', protect, riderOnly, getMyAssignedRequests);
-router.put('/requests/:id/status', protect, riderOnly, updateDeliveryStatus);
+router.put('/start/:id', protect, riderOnly, startDelivery);
+router.put('/complete/:id', protect, riderOnly, completeDelivery);
 
 module.exports = router;
