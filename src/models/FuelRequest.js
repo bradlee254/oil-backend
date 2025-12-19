@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const fuelRequestSchema = new mongoose.Schema(
   {
@@ -46,4 +46,5 @@ const fuelRequestSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("FuelRequest", fuelRequestSchema);
+const FuelRequest = mongoose.model("FuelRequest", fuelRequestSchema);
+export default FuelRequest;

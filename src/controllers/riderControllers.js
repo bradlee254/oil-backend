@@ -1,4 +1,4 @@
-const FuelRequest = require("../models/FuelRequest");
+import FuelRequest from "../models/FuelRequest.js";
 
 // Rider: view assigned jobs
 export const getMyAssignments = async (req, res) => {
@@ -15,7 +15,7 @@ export const getMyAssignments = async (req, res) => {
 };
 
 // Rider: start delivery
-export const  startDelivery = async (req, res) => {
+export const startDelivery = async (req, res) => {
   try {
     const request = await FuelRequest.findById(req.params.id);
 

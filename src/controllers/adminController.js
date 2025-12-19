@@ -1,8 +1,7 @@
 // controllers/adminController.js
 
-const User = require("../models/User");
-const FuelRequest = require("../models/FuelRequest"); // ← Critical: was missing before
-
+import User from "../models/User.js";
+import FuelRequest from "../models/FuelRequest.js";
 // Get all riders (for admin to select from)
 
 export const getRiders = async (req, res) => {

@@ -1,10 +1,9 @@
-const express = require('express');
+import express from "express";
+import { getRiders, assignRider } from "../controllers/adminController.js";
+import { protect, authAdmin } from "../middleware/authMiddleware.js";
 const router = express.Router();
-const {getRiders, assignRider} = require('../controllers/adminController');
-const {protect, authAdmin} = require('../middleware/authMiddleware');
+router.get("/riders", protect, authAdmin, getRiders);
 
-router.get('/riders', protect, authAdmin, getRiders);
+router.put("/requests/:requestId/assign", protect, authAdmin, assignRider);
 
-router.put('/requests/:requestId/assign', protect, authAdmin, assignRider);
-
-module.exports = router;
+export default router;

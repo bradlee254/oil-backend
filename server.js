@@ -1,12 +1,11 @@
-const express = require('express');
-const dotenv = require('dotenv');
-const cors = require('cors');
-const connectDb = require('./src/config/db');
-const authRoutes = require('./src/routes/authRoutes');
-const fuelRoutes = require('./src/routes/fuelRoutes');
-const riderRoutes = require('./src/routes/riderRoutes');
-const adminRoutes = require('./src/routes/adminRoutes');
-
+import express from 'express';
+import dotenv from 'dotenv';
+import cors from 'cors';
+import connectDb from './src/config/db.js';
+import authRoutes from './src/routes/authRoutes.js';
+import fuelRoutes from './src/routes/fuelRoutes.js';
+import riderRoutes from './src/routes/riderRoutes.js';
+import adminRoutes from './src/routes/adminRoutes.js';
 
 
 dotenv.config();
