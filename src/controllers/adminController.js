@@ -4,7 +4,8 @@ const User = require("../models/User");
 const FuelRequest = require("../models/FuelRequest"); // ← Critical: was missing before
 
 // Get all riders (for admin to select from)
-exports.getRiders = async (req, res) => {
+
+export const getRiders = async (req, res) => {
   try {
     const riders = await User.find({ role: "rider" }).select("name email");
     res.json({ riders });
@@ -15,7 +16,7 @@ exports.getRiders = async (req, res) => {
 };
 
 // Assign a rider to a fuel request
-exports.assignRider = async (req, res) => {
+export const assignRider = async (req, res) => {
   try {
     const { requestId } = req.params; // ← Fixed: removed extra comma
     const { riderId } = req.body;

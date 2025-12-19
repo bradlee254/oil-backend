@@ -1,7 +1,7 @@
 const FuelRequest = require("../models/FuelRequest");
 
 // Rider: view assigned jobs
-exports.getMyAssignments = async (req, res) => {
+export const getMyAssignments = async (req, res) => {
   try {
     const requests = await FuelRequest.find({
       rider: req.user._id,
@@ -15,7 +15,7 @@ exports.getMyAssignments = async (req, res) => {
 };
 
 // Rider: start delivery
-exports.startDelivery = async (req, res) => {
+export const  startDelivery = async (req, res) => {
   try {
     const request = await FuelRequest.findById(req.params.id);
 
@@ -33,7 +33,7 @@ exports.startDelivery = async (req, res) => {
 };
 
 // Rider: complete delivery
-exports.completeDelivery = async (req, res) => {
+export const completeDelivery = async (req, res) => {
   try {
     const request = await FuelRequest.findById(req.params.id);
 

@@ -1,6 +1,6 @@
 const FuelRequest = require('../models/FuelRequest');
 
-exports.createFuelRequest = async (req, res) => {
+export const createFuelRequest = async (req, res) => {
     try{
         const {fuelType, amount, coordinates} = req.body;
 
@@ -20,7 +20,7 @@ exports.createFuelRequest = async (req, res) => {
     }
 };
 
-exports.getMyRequests = async (req, res) =>{
+export const getMyRequests = async (req, res) =>{
     try{
         const requests = await FuelRequest.find({user: req.user._id});
         res.status(200).json({requests});
@@ -39,7 +39,7 @@ exports.getAllRequests = async (req, res) =>{
 }
 
 //update request status - Admin only
-exports.updateRequestStatus = async (req, res) =>{
+export const updateRequestStatus = async (req, res) =>{
     try{
         const {id} = req.params;
         const {status} = req.body;

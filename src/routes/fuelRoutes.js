@@ -1,4 +1,4 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
 const { createFuelRequest, getMyRequests, getAllRequests, updateRequestStatus} = require('../controllers/fuelController');
 const { protect } = require('../middleware/authMiddleware');

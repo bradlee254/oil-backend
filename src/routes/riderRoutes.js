@@ -1,4 +1,4 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
 const {getMyAssignedRequests, startDelivery,completeDelivery} = require('../controllers/riderControllers');
 const {protect} =require('../middleware/authMiddleware');
