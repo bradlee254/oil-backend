@@ -1,10 +1,12 @@
+// src/controllers/fuelController.js
 import FuelRequest from "../models/FuelRequest.js";
+import User from "../models/User.js"; // We use User instead of a separate Rider model
 
 export const createFuelRequest = async (req, res) => {
   try {
     const { fuelType, amount, coordinates } = req.body;
 
-    if (!fuelType || !amount || !coordinates) {
+    if (!fuelType || !amount || !coordinates || !Array.isArray(coordinates)) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
@@ -14,39 +16,55 @@ export const createFuelRequest = async (req, res) => {
       amount,
       location: { type: "Point", coordinates },
     });
-    res
-      .status(201)
-      .json({ message: "Fuel request created successfully", fuelRequest });
+
+    // Populate user for response
+    await fuelRequest.populate("user", "name email");
+
+    res.status(201).json({
+      message: "Fuel request created successfully",
+      fuelRequest,
+    });
   } catch (error) {
+    console.error("Create fuel request error:", error); // ← Helps debugging
     res.status(500).json({ message: "Server Error", error: error.message });
   }
 };
 
 export const getMyRequests = async (req, res) => {
   try {
-    const requests = await FuelRequest.find({ user: req.user._id });
+    const requests = await FuelRequest.find({ user: req.user._id })
+      .sort({ createdAt: -1 })
+      .populate("rider", "name email");
+
     res.status(200).json({ requests });
   } catch (error) {
-    res.status(500).json({ message: "Server Error", error: error.message });
-  }
-};
-// Admin only
-export const getAllRequests = async (req, res) => {
-  try {
-    const requests = await FuelRequest.find().populate("user", "name email");
-    res.json(requests);
-  } catch (error) {
+    console.error("Get my requests error:", error);
     res.status(500).json({ message: "Server Error", error: error.message });
   }
 };
 
-//update request status - Admin only
+// Admin only
+export const getAllRequests = async (req, res) => {
+  try {
+    const requests = await FuelRequest.find()
+      .populate("user", "name email")
+      .populate("rider", "name email")
+      .sort({ createdAt: -1 });
+
+    res.json(requests);
+  } catch (error) {
+    console.error("Get all requests error:", error);
+    res.status(500).json({ message: "Server Error", error: error.message });
+  }
+};
+
+// Update request status - Admin only
 export const updateRequestStatus = async (req, res) => {
   try {
     const { id } = req.params;
     const { status } = req.body;
 
-    if (!["pending", "delivered", "cancelled"].includes(status)) {
+    if (!["delivered", "cancelled"].includes(status)) {
       return res.status(400).json({ message: "Invalid status value" });
     }
 
@@ -57,16 +75,18 @@ export const updateRequestStatus = async (req, res) => {
 
     request.status = status;
     await request.save();
-    res.json({ message: "Request status updated", request });
 
+    // If delivered, free up the rider (optional feature)
     if (status === "delivered" && request.rider) {
-      const rider = await Rider.findById(request.rider);
-      if (rider) {
-        rider.status = "available";
-        await rider.save();
-      }
+      await User.findByIdAndUpdate(request.rider, { status: "available" });
     }
+
+    await request.populate("user", "name email");
+    await request.populate("rider", "name email");
+
+    res.json({ message: "Request status updated", request });
   } catch (error) {
+    console.error("Update request status error:", error);
     res.status(500).json({ message: "Server Error", error: error.message });
   }
 };
