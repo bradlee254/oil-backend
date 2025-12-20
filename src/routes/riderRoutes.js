@@ -1,21 +1,18 @@
 import express from "express";
+import { protect } from "../middleware/authMiddleware.js";
 import {
   getMyAssignments,
   startDelivery,
   completeDelivery,
 } from "../controllers/riderControllers.js";
-import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-const riderOnly = (req, res, next) => {
-  if (req.user.role !== "rider") {
-    return res.status(403).json({ message: "Access denied, riders only" });
-  }
-  next();
-};
-router.get("/requests", protect, riderOnly, getMyAssignments);
-router.put("/start/:id", protect, riderOnly, startDelivery);
-router.put("/complete/:id", protect, riderOnly, completeDelivery);
+// Get my active assignments
+router.get("/requests", protect, getMyAssignments);
+
+// Start and complete delivery
+router.put("/requests/:id/start", protect, startDelivery);
+router.put("/requests/:id/complete", protect, completeDelivery);
 
 export default router;
