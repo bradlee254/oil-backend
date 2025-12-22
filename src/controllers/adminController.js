@@ -1,8 +1,7 @@
-// controllers/adminController.js
+
 
 import User from "../models/User.js";
 import FuelRequest from "../models/FuelRequest.js";
-// Get all riders (for admin to select from)
 
 export const getRiders = async (req, res) => {
   try {
@@ -25,7 +24,6 @@ export const assignRider = async (req, res) => {
       return res.status(400).json({ message: "Rider ID is required" });
     }
 
-    // Find the fuel request
     const request = await FuelRequest.findById(requestId);
     if (!request) {
       return res.status(404).json({ message: "Fuel request not found" });
@@ -35,19 +33,14 @@ export const assignRider = async (req, res) => {
     if (request.status !== "pending") {
       return res.status(400).json({ message: "Only pending requests can be assigned" });
     }
-
-    // Validate the rider exists and has role 'rider'
     const rider = await User.findById(riderId);
     if (!rider || rider.role !== "rider") {
       return res.status(400).json({ message: "Invalid rider" });
     }
 
-    // Assign the rider and update status
     request.rider = riderId;
     request.status = "assigned";
     await request.save();
-
-    // Populate user and rider details for the response
     await request.populate("user", "name email");
     await request.populate("rider", "name email");
 
