@@ -1,4 +1,4 @@
-// src/controllers/riderController.js
+
 import FuelRequest from "../models/FuelRequest.js";
 
 // Rider: view assigned jobs
@@ -11,7 +11,6 @@ export const getMyAssignments = async (req, res) => {
       .populate("user", "name email")
       .sort({ createdAt: -1 });
 
-    // ← Important: wrap in { requests } so frontend can read res.data.requests
     res.json({ requests });
   } catch (err) {
     console.error("Get my assignments error:", err);
@@ -19,7 +18,7 @@ export const getMyAssignments = async (req, res) => {
   }
 };
 
-// Rider: start delivery
+//  start delivery
 export const startDelivery = async (req, res) => {
   try {
     const { id } = req.params;
@@ -50,7 +49,7 @@ export const startDelivery = async (req, res) => {
   }
 };
 
-// Rider: complete delivery
+//  complete delivery
 export const completeDelivery = async (req, res) => {
   try {
     const { id } = req.params;
