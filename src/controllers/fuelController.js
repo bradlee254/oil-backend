@@ -1,6 +1,6 @@
-// src/controllers/fuelController.js
+
 import FuelRequest from "../models/FuelRequest.js";
-import User from "../models/User.js"; // We use User instead of a separate Rider model
+import User from "../models/User.js"; 
 
 export const createFuelRequest = async (req, res) => {
   try {
@@ -25,7 +25,7 @@ export const createFuelRequest = async (req, res) => {
       fuelRequest,
     });
   } catch (error) {
-    console.error("Create fuel request error:", error); // ← Helps debugging
+    console.error("Create fuel request error:", error); 
     res.status(500).json({ message: "Server Error", error: error.message });
   }
 };
