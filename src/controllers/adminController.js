@@ -1,5 +1,3 @@
-
-
 import User from "../models/User.js";
 import FuelRequest from "../models/FuelRequest.js";
 

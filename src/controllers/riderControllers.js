@@ -1,4 +1,3 @@
-
 import FuelRequest from "../models/FuelRequest.js";
 
 // Rider: view assigned jobs
